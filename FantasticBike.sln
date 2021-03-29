@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Shipper", "FantasticBike.Shipper\FantasticBike.Shipper.csproj", "{D9492EDC-D19B-49CF-BFA3-44D7B178A533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Assembler", "FantasticBike.Assembler\FantasticBike.Assembler.csproj", "{37281C26-F1BA-4412-AE9C-DA2F540256CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.PartsProducer", "FantasticBike.PartsProducer\FantasticBike.PartsProducer.csproj", "{79C30BF0-9998-4842-BC73-9E07125D6A4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Shared", "FantasticBike.Shared\FantasticBike.Shared.csproj", "{2ABD46F2-7878-4C51-9F87-F606D943E04C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Infra", "FantasticBike.Infra\FantasticBike.Infra.csproj", "{1CFE6A70-7D17-476E-99DC-D952530F03D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9492EDC-D19B-49CF-BFA3-44D7B178A533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9492EDC-D19B-49CF-BFA3-44D7B178A533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9492EDC-D19B-49CF-BFA3-44D7B178A533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9492EDC-D19B-49CF-BFA3-44D7B178A533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37281C26-F1BA-4412-AE9C-DA2F540256CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37281C26-F1BA-4412-AE9C-DA2F540256CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37281C26-F1BA-4412-AE9C-DA2F540256CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37281C26-F1BA-4412-AE9C-DA2F540256CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C30BF0-9998-4842-BC73-9E07125D6A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C30BF0-9998-4842-BC73-9E07125D6A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C30BF0-9998-4842-BC73-9E07125D6A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C30BF0-9998-4842-BC73-9E07125D6A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ABD46F2-7878-4C51-9F87-F606D943E04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ABD46F2-7878-4C51-9F87-F606D943E04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ABD46F2-7878-4C51-9F87-F606D943E04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ABD46F2-7878-4C51-9F87-F606D943E04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CFE6A70-7D17-476E-99DC-D952530F03D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CFE6A70-7D17-476E-99DC-D952530F03D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CFE6A70-7D17-476E-99DC-D952530F03D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CFE6A70-7D17-476E-99DC-D952530F03D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
