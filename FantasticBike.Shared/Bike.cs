@@ -1,18 +1,12 @@
-﻿using NServiceBus;
+using System.Collections.Generic;
 
 namespace FantasticBike.Shared
 {
-    public class Bike : IMessage
+    public class Bike
     {
-        public string Id { get; }
-        public int Cost { get; }
-        public string Model { get; }
-
-        public Bike(string id, int cost, string model)
-        {
-            Id = id;
-            Cost = cost;
-            Model = model;
-        }
+        public string Id { get; set; }
+        public int Price { get; set; }
+        public string Model { get; set; }
+        public List<BikePart> Parts { get; set; }
     }
 }

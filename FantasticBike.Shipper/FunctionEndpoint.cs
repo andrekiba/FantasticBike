@@ -7,7 +7,7 @@ namespace FantasticBike.Shipper
 {
     public class FunctionEndpoint
     {
-        const string EndpointName = "bike-shipper";
+        const string EndpointName = "fantastic-bike-shipper";
 
         readonly NServiceBus.FunctionEndpoint endpoint;
         public FunctionEndpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;

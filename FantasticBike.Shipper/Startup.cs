@@ -19,7 +19,7 @@ namespace FantasticBike.Shipper
                     errorQueue: config["NServiceBus:ErrorQueue"])
                 .GetAwaiter().GetResult();
             
-            builder.UseNServiceBus(() => NServiceBusExtensions.BuildEndpointConfiguration(config));
+            builder.UseNServiceBus(() => NServiceBusExtensions.BuildEndpointConfiguration(builder, config));
         }
     }
 }

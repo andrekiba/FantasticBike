@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Shipper", "Fa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Assembler", "FantasticBike.Assembler\FantasticBike.Assembler.csproj", "{37281C26-F1BA-4412-AE9C-DA2F540256CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.PartsProducer", "FantasticBike.PartsProducer\FantasticBike.PartsProducer.csproj", "{79C30BF0-9998-4842-BC73-9E07125D6A4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Producer", "FantasticBike.Producer\FantasticBike.Producer.csproj", "{79C30BF0-9998-4842-BC73-9E07125D6A4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Shared", "FantasticBike.Shared\FantasticBike.Shared.csproj", "{2ABD46F2-7878-4C51-9F87-F606D943E04C}"
 EndProject

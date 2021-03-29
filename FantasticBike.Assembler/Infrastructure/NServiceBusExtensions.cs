@@ -2,16 +2,18 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.ServiceBus.Management;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using NServiceBus;
+using NServiceBus.Configuration.AdvancedExtensibility;
 
 namespace FantasticBike.Assembler.Infrastructure
 {
     public static class NServiceBusExtensions
     {
-        public static ServiceBusTriggeredEndpointConfiguration BuildEndpointConfiguration(IConfiguration configuration)
+        public static ServiceBusTriggeredEndpointConfiguration BuildEndpointConfiguration(IFunctionsHostBuilder builder, IConfiguration configuration)
         {
             var endpointConfiguration = new ServiceBusTriggeredEndpointConfiguration(configuration["NServiceBus:EndpointName"]);
             endpointConfiguration.LogDiagnostics();
@@ -41,6 +43,8 @@ namespace FantasticBike.Assembler.Infrastructure
 
             //This instruction checks every time the application starts up in order to create
             //all the necessary NServiceBus objects in the database automatically
+            var settings = e.GetSettings();
+            settings.Set("SqlPersistence.ScriptDirectory", builder.GetContext().ApplicationRootPath);
             e.EnableInstallers();
 
             return endpointConfiguration;

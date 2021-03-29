@@ -7,7 +7,7 @@ namespace FantasticBike.Assembler
 {
     public class FunctionEnpoint
     {
-        const string EndpointName = "bike-assembler";
+        const string EndpointName = "fantastic-bike-assembler";
 
         readonly NServiceBus.FunctionEndpoint endpoint;
         public FunctionEnpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;
