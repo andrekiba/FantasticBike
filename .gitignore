@@ -294,8 +294,5 @@ __pycache__/
 # OSX
 .DS_Store
 
-# Idea
-.Idea
-
 # local.settings.json
 local.settings.json
