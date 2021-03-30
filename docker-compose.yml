@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  fantastic.bike.assembler:
+    image:  andrekiba/fantastic-bike-assembler
+    build:
+      context: .
+      dockerfile: FantasticBike.Assembler/Dockerfile
+  fantastic.bike.shipper:
+    image: andrekiba/fantastic-bike-shipper
+    build:
+      context: .
+      dockerfile: FantasticBike.Shipper/Dockerfile

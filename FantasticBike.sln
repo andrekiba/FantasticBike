@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Shared", "Fan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Infra", "FantasticBike.Infra\FantasticBike.Infra.csproj", "{1CFE6A70-7D17-476E-99DC-D952530F03D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticBike.Docker", "FantasticBike.Docker.dcproj", "{87977AEC-F772-4268-B5AD-2C51B048947A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

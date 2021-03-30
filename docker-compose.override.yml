@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  fantastic.bike.assembler:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=<storage-connection-string>
+      - AzureWebJobsServiceBus=<asb-connection-string>
+      - NServiceBus:EndpointName=fantastic-bike-assembler
+      - NServiceBus:AuditQueue=audit
+      - NServiceBus:ErrorQueue=error
+      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
+  fantastic.bike.shipper:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=<storage-connection-string>
+      - AzureWebJobsServiceBus=<asb-connection-string>
+      - NServiceBus:EndpointName=fantastic-bike-shipper
+      - NServiceBus:AuditQueue=audit
+      - NServiceBus:ErrorQueue=error
+      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
