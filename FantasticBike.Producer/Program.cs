@@ -23,13 +23,17 @@ namespace FantasticBike.Producer
         static async Task Main(string[] args)
         {
             Console.Title = "FantasticBike.Producer";
-            Console.WriteLine("Specify how many bikes you want to produce:");
-            var bikeAmount = ReadHowManyBikesToProduce();
-            
-            await QueueAssembleBikeMessages(bikeAmount);
-
-            Console.WriteLine("OK, done!");
-            Console.ReadKey();
+            while (true)
+            {
+                Console.WriteLine("Specify how many bikes you want to produce:");
+                var bikeAmount = ReadHowManyBikesToProduce();
+                await QueueAssembleBikeMessages(bikeAmount);
+                Console.WriteLine("OK, done!");
+                Console.WriteLine("Produce other bikes?");
+                var answer = Console.ReadLine();
+                if (answer != null && !answer.Equals("yes", StringComparison.InvariantCultureIgnoreCase))
+                    break;
+            }
         }
         
         static async Task QueueAssembleBikeMessages(int bikeAmount)
