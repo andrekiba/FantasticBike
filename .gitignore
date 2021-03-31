@@ -295,4 +295,7 @@ __pycache__/
 .DS_Store
 
 # local.settings.json
-local.settings.json
+**/local.settings.json
+
+# docker-compose override
+**/docker-compose.override.yml

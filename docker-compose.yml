@@ -2,12 +2,34 @@ version: '3.4'
 
 services:
   fantastic.bike.assembler:
-    image:  andrekiba/fantastic-bike-assembler
+    image:  andrekiba/fantastic-bike-assembler:v1
     build:
       context: .
       dockerfile: FantasticBike.Assembler/Dockerfile
+    ports:
+      - "7071:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=<storage-connection-string>
+      - AzureWebJobsServiceBus=<asb-connection-string>
+      - NServiceBus:EndpointName=fantastic-bike-assembler
+      - NServiceBus:AuditQueue=audit
+      - NServiceBus:ErrorQueue=error
+      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
   fantastic.bike.shipper:
-    image: andrekiba/fantastic-bike-shipper
+    image: andrekiba/fantastic-bike-shipper:v1
     build:
       context: .
       dockerfile: FantasticBike.Shipper/Dockerfile
+    ports:
+      - "7072:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=<storage-connection-string>
+      - AzureWebJobsServiceBus=<asb-connection-string>
+      - NServiceBus:EndpointName=fantastic-bike-shipper
+      - NServiceBus:AuditQueue=audit
+      - NServiceBus:ErrorQueue=error
+      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
