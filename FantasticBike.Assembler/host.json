@@ -7,5 +7,12 @@
                 "isEnabled": true
             }
         }
+    },
+    "extensions": {
+        "serviceBus": {
+            "messageHandlerOptions": {
+                "maxConcurrentCalls": 5
+            }
+        }
     }
 }

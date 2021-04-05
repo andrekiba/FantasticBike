@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fantastic-bike-assembler
+  name: fantastic-bike-assembler
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "7071"
+      port: 7071
+      targetPort: 80
+  selector:
+    app: fantastic-bike-assembler
+status:
+  loadBalancer: {}

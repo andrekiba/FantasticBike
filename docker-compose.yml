@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   fantastic.bike.assembler:
-    image:  andrekiba/fantastic-bike-assembler:v1
+    image:  andrekiba/fantastic-bike-assembler:v2
     build:
       context: .
       dockerfile: FantasticBike.Assembler/Dockerfile
@@ -12,13 +12,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - AzureWebJobsStorage=<storage-connection-string>
       - AzureWebJobsServiceBus=<asb-connection-string>
-      - NServiceBus:EndpointName=fantastic-bike-assembler
-      - NServiceBus:AuditQueue=audit
-      - NServiceBus:ErrorQueue=error
-      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
-      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
+      - NServiceBus__EndpointName=fantastic-bike-assembler
+      - NServiceBus__AuditQueue=audit
+      - NServiceBus__ErrorQueue=error
+      - NServiceBus__ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus__ServiceControlMonitoringInstance=Particular.Monitoring
   fantastic.bike.shipper:
-    image: andrekiba/fantastic-bike-shipper:v1
+    image: andrekiba/fantastic-bike-shipper:v2
     build:
       context: .
       dockerfile: FantasticBike.Shipper/Dockerfile
@@ -28,8 +28,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - AzureWebJobsStorage=<storage-connection-string>
       - AzureWebJobsServiceBus=<asb-connection-string>
-      - NServiceBus:EndpointName=fantastic-bike-shipper
-      - NServiceBus:AuditQueue=audit
-      - NServiceBus:ErrorQueue=error
-      - NServiceBus:ServiceControlInstance=Particular.ServiceControl
-      - NServiceBus:ServiceControlMonitoringInstance=Particular.Monitoring
+      - NServiceBus__EndpointName=fantastic-bike-shipper
+      - NServiceBus__AuditQueue=audit
+      - NServiceBus__ErrorQueue=error
+      - NServiceBus__ServiceControlInstance=Particular.ServiceControl
+      - NServiceBus__ServiceControlMonitoringInstance=Particular.Monitoring

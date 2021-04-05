@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fantastic-bike-assembler
+  name: fantastic-bike-assembler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fantastic-bike-assembler
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: fantastic-bike-assembler
+    spec:
+      containers:
+        - env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: AzureWebJobsServiceBus
+              value: Endpoint=sb://fantasticbikedevns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=+coit2yqD1FaJ6EiveEkyaeiwFvw427CHUpMtoAmw4M=
+            - name: AzureWebJobsStorage
+              value: DefaultEndpointsProtocol=https;AccountName=fantasticbikedevst;AccountKey=w8iWyOWpr2ddw+ETjiFQVO+1aGoDzlGUwO3L+P65pBXkaQugko/j+BjRmjnwwVrXdtA+GDSPQznsSrOtj3A8gA==;EndpointSuffix=core.windows.net
+            - name: NServiceBus__AuditQueue
+              value: audit
+            - name: NServiceBus__EndpointName
+              value: fantastic-bike-assembler
+            - name: NServiceBus__ErrorQueue
+              value: error
+            - name: NServiceBus__ServiceControlInstance
+              value: Particular.ServiceControl
+            - name: NServiceBus__ServiceControlMonitoringInstance
+              value: Particular.Monitoring
+          image: andrekiba/fantastic-bike-assembler:v2
+          name: fantastic-bike-assembler
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
