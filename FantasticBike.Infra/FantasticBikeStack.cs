@@ -74,6 +74,20 @@ namespace FantasticBike.Infra
             
             #endregion 
             
+            #region AKS
+            /*
+            var aksArgs = new AksClusterArgs
+            {
+                ProjectName = projectName,
+                ResourceGroupName = resourceGroup.Name,
+                VmCount = 2,
+                VmSize = "Standard_D2_v3",
+                K8sVersion = "1.18.14"
+            };
+            var aks = new AksCluster("aks", aksArgs);
+            */
+            #endregion 
+            
             #region Output
             
             // Export the primary key of the Storage Account
@@ -82,12 +96,17 @@ namespace FantasticBike.Infra
             
             ASBPrimaryConnectionString = Output.Tuple(resourceGroup.Name, asbNamespace.Name).Apply(names =>
                 Output.Create(GetASBPrimaryConectionString(names.Item1, names.Item2)));
-            
+
+            //KubeConfig = aks.KubeConfig;
+            //PrincipalId = aks.PrincipalId;
+
             #endregion
         }
 
         [Output] public Output<string> PrimaryStorageKey { get; set; }
         [Output] public Output<string> ASBPrimaryConnectionString { get; set; }
+        //[Output] public Output<string> KubeConfig { get; set; }
+        //[Output] public Output<string> PrincipalId { get; set; }
         
         #region Private Methods
         
