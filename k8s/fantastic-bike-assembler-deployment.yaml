@@ -43,7 +43,13 @@ spec:
           name: fantastic-bike-assembler
           ports:
             - containerPort: 80
-          resources: {}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
       restartPolicy: Always
 status: {}
 ---

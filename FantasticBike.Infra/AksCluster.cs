@@ -111,7 +111,7 @@ namespace FantasticBike.Infra
                         }
                     }
                 },
-                NodeResourceGroup = args.ResourceGroupName,
+                NodeResourceGroup = $"{args.ProjectName}-{stackName}-cnode-rg",
                 ServicePrincipalProfile = new ManagedClusterServicePrincipalProfileArgs
                 {
                     ClientId = adApp.ApplicationId,
