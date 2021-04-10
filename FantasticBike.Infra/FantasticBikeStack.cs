@@ -80,7 +80,7 @@ namespace FantasticBike.Infra
             {
                 ProjectName = projectName,
                 ResourceGroupName = resourceGroup.Name,
-                VmCount = 2,
+                VmCount = 1,
                 VmSize = "Standard_D2_v3",
                 K8sVersion = "1.18.14"
             };
