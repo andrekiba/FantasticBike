@@ -5,10 +5,10 @@ metadata:
   namespace: fantastic-bike
 spec:
   jobTargetRef:
-    parallelism: 1
-    completions: 1
-    activeDeadlineSeconds: 600
-    backoffLimit: 6
+    parallelism: 1                # [max number of desired pods](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#controlling-parallelism)
+    completions: 1                # [desired number of successfully finished pods](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#controlling-parallelism)
+    activeDeadlineSeconds: 3600   # Specifies the duration in seconds relative to the startTime that the job may be active before the system tries to terminate it; value must be positive integer
+    backoffLimit: 1               # Specifies the number of retries before marking this job failed. Defaults to 6
     template:
       spec:
         containers:
@@ -39,6 +39,7 @@ spec:
             name: fantastic-bike-assembler-job
             ports:
               - containerPort: 80
+                protocol: TCP
             resources:
               requests:
                 cpu: 100m
@@ -46,13 +47,16 @@ spec:
               limits:
                 cpu: 200m
                 memory: 256Mi
-        restartPolicy: OnFailure
+        restartPolicy: Never
+  pollingInterval: 10    
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 3
   maxReplicaCount: 10
   triggers:
     - type: azure-servicebus
       metadata:
         queueName: fantastic-bike-assembler
-        messageCount: '10'
+        messageCount: '1'
       authenticationRef:
         name: trigger-auth-asb
 ---

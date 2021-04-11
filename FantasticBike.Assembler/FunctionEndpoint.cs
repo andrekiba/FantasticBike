@@ -66,6 +66,7 @@ namespace FantasticBike.Assembler
             
             var messageSender = new MessageSender(messageReceiver.ServiceBusConnection, 
                 entityPath: "fantastic-bike-shipper", viaEntityPath: "fantastic-bike-assembler");
+            var shipBikeMessage = new ShipBikeMessage(assembleBikeMessage.Id, faker.Address.FullAddress());
             var rowShipBikeMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(shipBikeMessage));
             var nativeMessage = new Message(rowShipBikeMessage)
             {
@@ -76,11 +77,11 @@ namespace FantasticBike.Assembler
                 }
             };
             await messageSender.SendAsync(nativeMessage);
+            //TODO: manually set "autoComplete": false in host.json
             await messageReceiver.CompleteAsync(nativeMessage.SystemProperties.LockToken);
             
             logger.LogWarning($"Bike {assembleBikeMessage.Id} assembled and ready to be shipped!");
                 
-            TODO: manually set "autoComplete": false in host.json
             scope.Complete();
             
             #endregion

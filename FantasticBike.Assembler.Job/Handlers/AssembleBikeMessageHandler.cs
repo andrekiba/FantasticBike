@@ -15,7 +15,7 @@ namespace FantasticBike.Assembler.Job.Handlers
         public async Task Handle(AssembleBikeMessage message, IMessageHandlerContext context)
         {
             log.Warn($"Handling {nameof(AssembleBikeMessage)} in {nameof(AssembleBikeMessageHandler)}.");
-            await Task.Delay(TimeSpan.FromMinutes(faker.Random.Number(1,10)));
+            await Task.Delay(TimeSpan.FromMinutes(faker.Random.Number(5,10)));
             
             var sendOptions = new SendOptions();
             sendOptions.SetDestination("fantastic-bike-shipper");
