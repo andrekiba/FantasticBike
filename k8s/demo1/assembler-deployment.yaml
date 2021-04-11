@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: assembler
+  namespace: fantastic-bike
   labels:
-    app: fantastic-bike-shipper
-  name: fantastic-bike-shipper
+    app: assembler
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fantastic-bike-shipper
-  strategy: {}
+      app: assembler
   template:
     metadata:
       labels:
-        app: fantastic-bike-shipper
+        app: assembler
     spec:
       containers:
         - env:
@@ -22,25 +22,25 @@ spec:
             - name: AzureWebJobsServiceBus
               valueFrom:
                 secretKeyRef:
-                  name: fantastic-bike-shipper-secrets
+                  name: assembler
                   key: AzureWebJobsServiceBus
             - name: AzureWebJobsStorage
               valueFrom:
                 secretKeyRef:
-                  name: fantastic-bike-shipper-secrets
+                  name: assembler
                   key: AzureWebJobsStorage
             - name: NServiceBus__AuditQueue
               value: audit
             - name: NServiceBus__EndpointName
-              value: fantastic-bike-shipper
+              value: fantastic-bike-assembler
             - name: NServiceBus__ErrorQueue
               value: error
             - name: NServiceBus__ServiceControlInstance
               value: Particular.ServiceControl
             - name: NServiceBus__ServiceControlMonitoringInstance
               value: Particular.Monitoring
-          image: andrekiba/fantastic-bike-shipper:v2
-          name: fantastic-bike-shipper
+          image: andrekiba/fantastic-bike-assembler:v2
+          name: fantastic-bike-assembler
           ports:
             - containerPort: 80
           resources:
@@ -51,14 +51,14 @@ spec:
               cpu: 200m
               memory: 256Mi
       restartPolicy: Always
-status: {}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: fantastic-bike-shipper-secrets
+  name: assembler
+  namespace: fantastic-bike
   labels:
-    app: fantastic-bike-shipper
+    app: assembler
 data:
   AzureWebJobsServiceBus: RW5kcG9pbnQ9c2I6Ly9mYW50YXN0aWNiaWtlZGV2bnMuc2VydmljZWJ1cy53aW5kb3dzLm5ldC87U2hhcmVkQWNjZXNzS2V5TmFtZT1Sb290TWFuYWdlU2hhcmVkQWNjZXNzS2V5O1NoYXJlZEFjY2Vzc0tleT0rY29pdDJ5cUQxRmFKNkVpdmVFa3lhZWl3RnZ3NDI3Q0hVcE10b0FtdzRNPQ==
   AzureWebJobsStorage: RGVmYXVsdEVuZHBvaW50c1Byb3RvY29sPWh0dHBzO0FjY291bnROYW1lPWZhbnRhc3RpY2Jpa2VkZXZzdDtBY2NvdW50S2V5PXc4aVd5T1dwcjJkZHcrRVRqaUZRVk8rMWFHb0R6bEdVd08zTCtQNjVwQlhrYVF1Z2tvL2orQmpSbWpud3dWclhkdEErR0RTUFF6bnNTck90ajNBOGdBPT07RW5kcG9pbnRTdWZmaXg9Y29yZS53aW5kb3dzLm5ldA==

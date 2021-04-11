@@ -1,20 +1,11 @@
 apiVersion: keda.sh/v1alpha1
-kind: TriggerAuthentication
-metadata:
-  name: fantastic-bike-trigger-auth
-spec:
-  secretTargetRef:
-    - parameter: connection
-      name: secrets-fantastic-bike-assembler
-      key: AzureWebJobsServiceBus
----
-apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: fantastic-bike-assembler-scaler
+  name: assembler-scaler
+  namespace: fantastic-bike
 spec:
   scaleTargetRef:
-    name: fantastic-bike-assembler
+    name: assembler
   cooldownPeriod:  5 # Optional. Default: 300 seconds
   # minReplicaCount: 0 Change to define how many minimum replicas you want
   maxReplicaCount: 10
@@ -24,4 +15,4 @@ spec:
         queueName: fantastic-bike-assembler
         messageCount: '10'
       authenticationRef:
-        name: fantastic-bike-trigger-auth
+        name: trigger-auth-asb

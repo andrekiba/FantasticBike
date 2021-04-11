@@ -1,10 +1,11 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: fantastic-bike-shipper-scaler
+  name: shipper-scaler
+  namespace: fantastic-bike
 spec:
   scaleTargetRef:
-    name: fantastic-bike-shipper
+    name: shipper
   cooldownPeriod:  5 # Optional. Default: 300 seconds
   # minReplicaCount: 0 Change to define how many minimum replicas you want
   maxReplicaCount: 10
@@ -14,4 +15,4 @@ spec:
         queueName: fantastic-bike-shipper
         messageCount: '10'
       authenticationRef:
-        name: fantastic-bike-trigger-auth
+        name: trigger-auth-asb

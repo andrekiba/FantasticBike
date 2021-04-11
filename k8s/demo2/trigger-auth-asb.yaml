@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: scaler
+  namespace: fantastic-bike
+data:
+  AzureWebJobsServiceBus: RW5kcG9pbnQ9c2I6Ly9mYW50YXN0aWNiaWtlZGV2bnMuc2VydmljZWJ1cy53aW5kb3dzLm5ldC87U2hhcmVkQWNjZXNzS2V5TmFtZT1Sb290TWFuYWdlU2hhcmVkQWNjZXNzS2V5O1NoYXJlZEFjY2Vzc0tleT0rY29pdDJ5cUQxRmFKNkVpdmVFa3lhZWl3RnZ3NDI3Q0hVcE10b0FtdzRNPQ==
+---
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: trigger-auth-asb
+  namespace: fantastic-bike
+spec:
+  secretTargetRef:
+    - parameter: connection
+      name: scaler
+      key: AzureWebJobsServiceBus

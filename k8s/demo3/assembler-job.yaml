@@ -1,0 +1,68 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: assembler-job
+  namespace: fantastic-bike
+spec:
+  jobTargetRef:
+    parallelism: 1
+    completions: 1
+    activeDeadlineSeconds: 600
+    backoffLimit: 6
+    template:
+      spec:
+        containers:
+          - env:
+              - name: ASPNETCORE_ENVIRONMENT
+                value: Development
+              - name: AzureWebJobsServiceBus
+                valueFrom:
+                  secretKeyRef:
+                    name: assembler-job
+                    key: AzureWebJobsServiceBus
+              - name: AzureWebJobsStorage
+                valueFrom:
+                  secretKeyRef:
+                    name: assembler-job
+                    key: AzureWebJobsStorage
+              - name: NServiceBus__AuditQueue
+                value: audit
+              - name: NServiceBus__EndpointName
+                value: fantastic-bike-assembler
+              - name: NServiceBus__ErrorQueue
+                value: error
+              - name: NServiceBus__ServiceControlInstance
+                value: Particular.ServiceControl
+              - name: NServiceBus__ServiceControlMonitoringInstance
+                value: Particular.Monitoring
+            image: andrekiba/fantastic-bike-assembler-job:v1
+            name: fantastic-bike-assembler-job
+            ports:
+              - containerPort: 80
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
+        restartPolicy: OnFailure
+  maxReplicaCount: 10
+  triggers:
+    - type: azure-servicebus
+      metadata:
+        queueName: fantastic-bike-assembler
+        messageCount: '10'
+      authenticationRef:
+        name: trigger-auth-asb
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: assembler-job
+  namespace: fantastic-bike
+  labels:
+    app: assembler-job
+data:
+  AzureWebJobsServiceBus: RW5kcG9pbnQ9c2I6Ly9mYW50YXN0aWNiaWtlZGV2bnMuc2VydmljZWJ1cy53aW5kb3dzLm5ldC87U2hhcmVkQWNjZXNzS2V5TmFtZT1Sb290TWFuYWdlU2hhcmVkQWNjZXNzS2V5O1NoYXJlZEFjY2Vzc0tleT0rY29pdDJ5cUQxRmFKNkVpdmVFa3lhZWl3RnZ3NDI3Q0hVcE10b0FtdzRNPQ==
+  AzureWebJobsStorage: RGVmYXVsdEVuZHBvaW50c1Byb3RvY29sPWh0dHBzO0FjY291bnROYW1lPWZhbnRhc3RpY2Jpa2VkZXZzdDtBY2NvdW50S2V5PXc4aVd5T1dwcjJkZHcrRVRqaUZRVk8rMWFHb0R6bEdVd08zTCtQNjVwQlhrYVF1Z2tvL2orQmpSbWpud3dWclhkdEErR0RTUFF6bnNTck90ajNBOGdBPT07RW5kcG9pbnRTdWZmaXg9Y29yZS53aW5kb3dzLm5ldA==
