@@ -9,6 +9,7 @@ spec:
     completions: 1                # [desired number of successfully finished pods](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#controlling-parallelism)
     activeDeadlineSeconds: 3600   # Specifies the duration in seconds relative to the startTime that the job may be active before the system tries to terminate it; value must be positive integer
     backoffLimit: 1               # Specifies the number of retries before marking this job failed. Defaults to 6
+    ttlSecondsAfterFinished: 120
     template:
       spec:
         containers:
@@ -35,7 +36,7 @@ spec:
                 value: Particular.ServiceControl
               - name: NServiceBus__ServiceControlMonitoringInstance
                 value: Particular.Monitoring
-            image: andrekiba/fantastic-bike-assembler-job:v1
+            image: andrekiba/fantastic-bike-assembler-job:v2
             name: fantastic-bike-assembler-job
             ports:
               - containerPort: 80

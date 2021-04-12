@@ -11,7 +11,7 @@ namespace FantasticBike.Shipper
     {
         const string EndpointName = "fantastic-bike-shipper";
         readonly NServiceBus.FunctionEndpoint endpoint;
-        static readonly Random random = new Random();
+        readonly Random random = new Random();
         public FunctionEndpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;
 
         

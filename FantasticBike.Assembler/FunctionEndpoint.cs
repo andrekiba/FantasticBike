@@ -16,7 +16,7 @@ namespace FantasticBike.Assembler
     {
         const string EndpointName = "fantastic-bike-assembler";
         readonly NServiceBus.FunctionEndpoint endpoint;
-        static readonly Faker faker = new Faker();
+        readonly Faker faker = new Faker();
         public FunctionEnpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;
         
         [FunctionName(EndpointName)]

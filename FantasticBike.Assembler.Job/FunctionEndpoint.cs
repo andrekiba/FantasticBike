@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -16,28 +18,32 @@ namespace FantasticBike.Assembler.Job
     {
         const string EndpointName = "fantastic-bike-assembler";
         readonly NServiceBus.FunctionEndpoint endpoint;
-        static readonly Faker faker = new Faker();
+        readonly Faker faker = new Faker();
         public FunctionEnpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;
         
+        /*
         [FunctionName(EndpointName)]
         public Task Run(
             [ServiceBusTrigger(queueName: "%NServiceBus:EndpointName%")] Message message, 
             ILogger logger, 
             ExecutionContext executionContext) =>
             endpoint.Process(message, executionContext, logger);
+        */
         
-        /*
+        
         [FunctionName("AssembleBike")]
         public async Task AssembleBike(
             [ServiceBusTrigger("fantastic-bike-assembler", Connection = "AzureWebJobsServiceBus")] AssembleBikeMessage assembleBikeMessage,
             [ServiceBus("fantastic-bike-shipper", Connection = "AzureWebJobsServiceBus")]IAsyncCollector<Message> collector,
             ILogger logger,
-            MessageReceiver messageReceiver)
+            MessageReceiver messageReceiver,
+            ExecutionContext executionContext
+            )
         {
             #region No transaction
             
             logger.LogWarning($"Handling {nameof(AssembleBikeMessage)} in {nameof(AssembleBike)}.");
-            await Task.Delay(TimeSpan.FromMinutes(faker.Random.Number(5,10)));
+            await Task.Delay(TimeSpan.FromMinutes(faker.Random.Number(1,5)));
 
             var shipBikeMessage = new ShipBikeMessage(assembleBikeMessage.Id, faker.Address.FullAddress());
             var rowShipBikeMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(shipBikeMessage));
@@ -84,8 +90,10 @@ namespace FantasticBike.Assembler.Job
             //
             // scope.Complete();
             //
-            // #endregion            
+            // #endregion
+            
+            //Force the function app shutdown
+            await File.WriteAllTextAsync(Path.Combine(executionContext.FunctionAppDirectory, "app_offline.htm"), string.Empty);
         }
-        */
     }
 }
