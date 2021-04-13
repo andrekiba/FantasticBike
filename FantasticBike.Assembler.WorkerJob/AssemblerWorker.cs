@@ -12,55 +12,57 @@ using Newtonsoft.Json;
 
 namespace FantasticBike.Assembler.WorkerJob
 {
-    public class Worker : BackgroundService
+    public class AssemblerWorker : BackgroundService
     {
-        readonly ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder;
+        readonly ServiceBusConnectionStringBuilder asbConnectionBuilder;
         readonly IConfiguration configuration;
-        readonly ILogger<Worker> logger;
+        readonly ILogger<AssemblerWorker> logger;
         readonly QueueClient assemblerQueue;
         readonly QueueClient shipperQueue;
         readonly Faker faker = new();
         readonly IHostApplicationLifetime appLifetime;
+        bool workCompleted;
         
-        public Worker(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder, IConfiguration configuration, 
+        public AssemblerWorker(ServiceBusConnectionStringBuilder asbConnectionBuilder, IConfiguration configuration, 
             IHostApplicationLifetime appLifetime,
-            ILogger<Worker> logger)
+            ILogger<AssemblerWorker> logger)
         {
-            this.serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder;
+            this.asbConnectionBuilder = asbConnectionBuilder;
             this.configuration = configuration;
             this.logger = logger;
             this.appLifetime = appLifetime;
-            assemblerQueue = new QueueClient(serviceBusConnectionStringBuilder.GetNamespaceConnectionString(), "fantastic-bike-assembler");
-            shipperQueue = new QueueClient(serviceBusConnectionStringBuilder.GetNamespaceConnectionString(), "fantastic-bike-shipper");
+            assemblerQueue = new QueueClient(asbConnectionBuilder.GetNamespaceConnectionString(), "fantastic-bike-assembler");
+            shipperQueue = new QueueClient(asbConnectionBuilder.GetNamespaceConnectionString(), "fantastic-bike-shipper");
         }
 
-        public override Task StartAsync(CancellationToken cancellationToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken) => Task.Run(async () =>
         {
-            return base.StartAsync(cancellationToken);
-        }
-
-        public override Task StopAsync(CancellationToken cancellationToken)
-        {
-            return base.StopAsync(cancellationToken);
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(HandleReceivedException)
+            try
             {
-                MaxConcurrentCalls = 1,
-                AutoComplete = false,
-                MaxAutoRenewDuration = TimeSpan.FromHours(1)
-            };
-            assemblerQueue.RegisterMessageHandler(HandleMessage, messageHandlerOptions);
-            
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                var messageHandlerOptions = new MessageHandlerOptions(HandleReceivedException)
+                {
+                    MaxConcurrentCalls = 1,
+                    AutoComplete = false,
+                    MaxAutoRenewDuration = TimeSpan.FromHours(1)
+                };
+                assemblerQueue.RegisterMessageHandler(HandleMessage, messageHandlerOptions);
+
+                while (!workCompleted && !stoppingToken.IsCancellationRequested)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                }
             }
-            
-            await assemblerQueue.CloseAsync();
-        }
+            catch (Exception e)
+            {
+                logger.LogCritical(e, "Fatal error");
+            }
+            finally
+            {
+                await assemblerQueue.CloseAsync();
+                appLifetime.StopApplication();
+            }
+        }, stoppingToken);
+        
         async Task HandleMessage(Message message, CancellationToken cancellationToken)
         {
             var rawMessageBody = Encoding.UTF8.GetString(message.Body);
@@ -69,7 +71,7 @@ namespace FantasticBike.Assembler.WorkerJob
             var assembleBikeMessage = JsonConvert.DeserializeObject<AssembleBikeMessage>(rawMessageBody);
             if (assembleBikeMessage != null)
             {
-                await Task.Delay(TimeSpan.FromMinutes(faker.Random.Number(1,5)), cancellationToken);
+                await Task.Delay(TimeSpan.Parse(configuration.GetValue<string>("FakeWorkDuration")), cancellationToken);
 
                 var shipBikeMessage = new ShipBikeMessage(assembleBikeMessage.Id, faker.Address.FullAddress());
                 var rowShipBikeMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(shipBikeMessage));
@@ -90,11 +92,10 @@ namespace FantasticBike.Assembler.WorkerJob
             else
                 logger.LogError("Unable to deserialize to message contract {ContractName} for message {MessageBody}", typeof(AssembleBikeMessage), rawMessageBody);
             
+            await assemblerQueue.CompleteAsync(message.SystemProperties.LockToken);
             logger.LogInformation("Message {MessageId} processed", message.MessageId);
 
-            await assemblerQueue.CompleteAsync(message.SystemProperties.LockToken);
-            
-            appLifetime.StopApplication();
+            workCompleted = true;
         }
         Task HandleReceivedException(ExceptionReceivedEventArgs exceptionEvent)
         {

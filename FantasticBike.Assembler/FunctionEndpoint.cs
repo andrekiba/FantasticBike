@@ -26,7 +26,7 @@ namespace FantasticBike.Assembler
             ExecutionContext executionContext) =>
             endpoint.Process(message, executionContext, logger);
 
-        /*
+        [Disable]
         [FunctionName("AssembleBike")]
         public async Task AssembleBike(
             [ServiceBusTrigger("fantastic-bike-assembler", Connection = "AzureWebJobsServiceBus")] AssembleBikeMessage assembleBikeMessage,
@@ -57,35 +57,34 @@ namespace FantasticBike.Assembler
             
             #endregion
             
-            #region In transaction
-            
-            using var scope = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled);
-            
-            logger.LogWarning($"Handling {nameof(AssembleBikeMessage)} in {nameof(AssembleBike)}.");
-            await Task.Delay(TimeSpan.FromSeconds(faker.Random.Number(1,5)));
-            
-            var messageSender = new MessageSender(messageReceiver.ServiceBusConnection, 
-                entityPath: "fantastic-bike-shipper", viaEntityPath: "fantastic-bike-assembler");
-            var shipBikeMessage = new ShipBikeMessage(assembleBikeMessage.Id, faker.Address.FullAddress());
-            var rowShipBikeMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(shipBikeMessage));
-            var nativeMessage = new Message(rowShipBikeMessage)
-            {
-                MessageId = Guid.NewGuid().ToString(),
-                UserProperties =
-                {
-                    {"NServiceBus.EnclosedMessageTypes", typeof(ShipBikeMessage).FullName}
-                }
-            };
-            await messageSender.SendAsync(nativeMessage);
-            //TODO: manually set "autoComplete": false in host.json
-            await messageReceiver.CompleteAsync(nativeMessage.SystemProperties.LockToken);
-            
-            logger.LogWarning($"Bike {assembleBikeMessage.Id} assembled and ready to be shipped!");
-                
-            scope.Complete();
-            
-            #endregion
+            // #region In transaction
+            //
+            // using var scope = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled);
+            //
+            // logger.LogWarning($"Handling {nameof(AssembleBikeMessage)} in {nameof(AssembleBike)}.");
+            // await Task.Delay(TimeSpan.FromSeconds(faker.Random.Number(1,5)));
+            //
+            // var messageSender = new MessageSender(messageReceiver.ServiceBusConnection, 
+            //     entityPath: "fantastic-bike-shipper", viaEntityPath: "fantastic-bike-assembler");
+            // var shipBikeMessage = new ShipBikeMessage(assembleBikeMessage.Id, faker.Address.FullAddress());
+            // var rowShipBikeMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(shipBikeMessage));
+            // var nativeMessage = new Message(rowShipBikeMessage)
+            // {
+            //     MessageId = Guid.NewGuid().ToString(),
+            //     UserProperties =
+            //     {
+            //         {"NServiceBus.EnclosedMessageTypes", typeof(ShipBikeMessage).FullName}
+            //     }
+            // };
+            // await messageSender.SendAsync(nativeMessage);
+            // //TODO: manually set "autoComplete": false in host.json
+            // await messageReceiver.CompleteAsync(nativeMessage.SystemProperties.LockToken);
+            //
+            // logger.LogWarning($"Bike {assembleBikeMessage.Id} assembled and ready to be shipped!");
+            //     
+            // scope.Complete();
+            //
+            // #endregion
         }
-        */
     }
 }

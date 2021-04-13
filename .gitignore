@@ -297,5 +297,8 @@ __pycache__/
 # local.settings.json
 **/local.settings.json
 
+# appsettings.secret.json
+**/appsettings.secret.json
+
 # docker-compose override
 **/docker-compose.override.yml
