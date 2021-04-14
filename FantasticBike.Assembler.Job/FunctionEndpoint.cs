@@ -18,8 +18,13 @@ namespace FantasticBike.Assembler.Job
         const string EndpointName = "fantastic-bike-assembler";
         readonly NServiceBus.FunctionEndpoint endpoint;
         readonly Faker faker = new Faker();
-        public FunctionEnpoint(NServiceBus.FunctionEndpoint endpoint) => this.endpoint = endpoint;
-        
+        readonly IConfiguration configuration;
+        public FunctionEnpoint(NServiceBus.FunctionEndpoint endpoint, IConfiguration configuration)
+        {
+            this.endpoint = endpoint;
+            this.configuration = configuration;
+        }
+
         [Disable]
         [FunctionName(EndpointName)]
         public Task Run(
@@ -33,7 +38,6 @@ namespace FantasticBike.Assembler.Job
             [ServiceBusTrigger("fantastic-bike-assembler", Connection = "AzureWebJobsServiceBus")] AssembleBikeMessage assembleBikeMessage,
             [ServiceBus("fantastic-bike-shipper", Connection = "AzureWebJobsServiceBus")]IAsyncCollector<Message> collector,
             ILogger logger,
-            IConfiguration configuration,
             MessageReceiver messageReceiver,
             ExecutionContext executionContext
             )

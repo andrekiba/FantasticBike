@@ -19,7 +19,6 @@ namespace FantasticBike.Producer
         };
         static readonly string[] bikeModels = { "mtb-xc", "mtb-trail", "mtb-enduro", "mtb-downhill", "bdc-aero", "bdc-endurance", "gravel", "ciclocross", "trekking", "urban" };
         
-        
         static async Task Main(string[] args)
         {
             Console.Title = "FantasticBike.Producer";
