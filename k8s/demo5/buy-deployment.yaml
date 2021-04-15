@@ -27,9 +27,9 @@ spec:
             - name: AzureWebJobsStorage
               valueFrom:
                 secretKeyRef:
-                  name: assembler
+                  name: buy
                   key: AzureWebJobsStorage
-          image: andrekiba/fantastic-bike-buy:v1
+          image: andrekiba/fantastic-bike-buy:v2
           name: fantastic-bike-buy
           ports:
             - containerPort: 80

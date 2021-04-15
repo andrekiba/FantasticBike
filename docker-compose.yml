@@ -33,3 +33,14 @@ services:
       - NServiceBus__ErrorQueue=error
       - NServiceBus__ServiceControlInstance=Particular.ServiceControl
       - NServiceBus__ServiceControlMonitoringInstance=Particular.Monitoring
+  fantastic.bike.buy:
+    image: andrekiba/fantastic-bike-buy:v1
+    build:
+      context: .
+      dockerfile: FantasticBike.Buy/Dockerfile
+    ports:
+      - "7073:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=<storage-connection-string>
+      - ASBConnectionString=<asb-connection-string>

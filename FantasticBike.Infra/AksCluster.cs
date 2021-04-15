@@ -75,6 +75,16 @@ namespace FantasticBike.Infra
             {
                 ResourceName = clusterName,
                 ResourceGroupName = args.ResourceGroupName,
+                /*
+                NetworkProfile = new ContainerServiceNetworkProfileArgs
+                {
+                    NetworkPlugin = "azure"
+                },
+                */
+                AutoScalerProfile = new ManagedClusterPropertiesAutoScalerProfileArgs
+                {
+                    
+                },
                 AddonProfiles =
                 {
                     { "KubeDashboard", new ManagedClusterAddonProfileArgs { Enabled = true } }

@@ -39,7 +39,7 @@ namespace FantasticBike.Buy
         [FunctionName("Buy")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "buy")] HttpRequest req,
-            ILogger log)
+            ILogger logger)
         {
             var bike = ProduceBike();
             var bikeMessage = new AssembleBikeMessage(bike.Id, bike.Price, bike.Model, bike.Parts);
@@ -54,8 +54,10 @@ namespace FantasticBike.Buy
                 }
             };
                 
-            Console.WriteLine($"Queuing bike assembly {bike.Id}");
+            logger.LogWarning($"Sending buying request for bike {bike.Id}");
             await assemblerQueue.SendAsync(nativeMessage).ConfigureAwait(false);
+            
+            logger.LogWarning($"Bike {bike.Id} bought successfully!");
 
             return new AcceptedResult();
         }

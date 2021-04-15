@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-    - host: fantasticbike1.westeurope.cloudapp.azure.com
+    - host: fantasticbike.westeurope.cloudapp.azure.com
       http:
         paths:
           - backend:
