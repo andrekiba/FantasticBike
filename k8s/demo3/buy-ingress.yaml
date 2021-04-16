@@ -1,11 +1,10 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: buy
   namespace: fantastic-bike
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: fantasticbike.westeurope.cloudapp.azure.com
@@ -14,4 +13,4 @@ spec:
           - backend:
               serviceName: buy
               servicePort: 80
-            path: /buy(/|$)(.*)
+            path: /

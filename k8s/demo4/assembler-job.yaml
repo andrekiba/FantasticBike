@@ -37,8 +37,9 @@ spec:
               - name: NServiceBus__ServiceControlMonitoringInstance
                 value: Particular.Monitoring
               - name: FakeWorkDuration
-                value: "00:05:00"
+                value: "00:03:00"
             image: andrekiba/fantastic-bike-assembler-job:v2
+            imagePullPolicy: Always
             name: fantastic-bike-assembler-job
             ports:
               - containerPort: 80

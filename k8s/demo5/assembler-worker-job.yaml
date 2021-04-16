@@ -22,8 +22,9 @@ spec:
                     name: assembler-worker-job
                     key: ASBConnectionString
               - name: FakeWorkDuration
-                value: "00:05:00"
+                value: "00:03:00"
             image: andrekiba/fantastic-bike-assembler-worker-job:v2
+            imagePullPolicy: Always
             name: fantastic-bike-assembler-worker-job
             resources:
               requests:
